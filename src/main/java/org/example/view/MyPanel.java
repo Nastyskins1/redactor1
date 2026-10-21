@@ -1,18 +1,17 @@
 package org.example.view;
 
 
-import controller.Controller;
-import model.SpeakBehavior;
+import org.example.controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Point2D;
 
 public class MyPanel extends JPanel {
     JTextField t1;
     JButton b3;
     JButton b4;
+    JButton b5;
     Controller controller;
 
 
