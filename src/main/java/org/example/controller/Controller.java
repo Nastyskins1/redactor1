@@ -1,4 +1,10 @@
 package org.example.controller;
+
+import org.example.controller.action.ActionDraw;
+import org.example.controller.action.ActionInterface;
+import org.example.model.FillBehavior;
+import org.example.model.Model;
+import org.example.model.MyShape;
 import org.example.view.MyFrame;
 import org.example.view.MyPanel;
 
@@ -6,49 +12,43 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
 import java.awt.geom.RectangularShape;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Controller {
-    Point2D []points;
-    MyPanel myPanel;
-    MyFrame myFrame;
-    RectangularShape currentShape;
-    Rectangle2D rectangle2D;
-    Ellipse2D ellipse2D;
+    Model model;
+    MyPanel panel;
+    MyFrame frame;
+    ActionInterface actionInterface;
 
+    public Controller() {
+        model = new Model();
+        model.setCurrentShape(new MyShape());
+        panel = new MyPanel(this);
+        frame = new MyFrame(panel);
+        actionInterface = new ActionDraw(model);
+        frame.setController(this);
+    }
 
-    public Controller(){
-        rectangle2D = new Rectangle2D.Double();
-        ellipse2D = new Ellipse2D.Double();
-        points=new Point2D[2];
-
-        myPanel=new MyPanel(this);
-        myFrame=new MyFrame(myPanel);
-        currentShape=rectangle2D;
+    public void setActionInterface(ActionInterface actionInterface) {
+        this.actionInterface = actionInterface;
+        actionInterface.setModel(model);
     }
 
     public void mousePressed(Point point) {
-        points[0]=point;
+        actionInterface.mousePressed(point);
     }
-    public void mouseDragged(Point point){
-        points[1] = point;
-    }
-    public void draw(Graphics2D g2){
-        if(points[0]!=null)
-        {
-            currentShape.setFrameFromDiagonal(points[0],points[1]);
-            g2.draw(currentShape);
-        }
 
+    public void mouseDragged(Point point) {
+        actionInterface.mouseDragged(point);
+    }
+
+    public Collection<MyShape> translate() {
+        return model.getList();
     }
 
 
-    public void setEllipse() {
-        currentShape = ellipse2D;
-    }
 
-    public void setRect() {
-        currentShape = rectangle2D;
-    }
 }
+
